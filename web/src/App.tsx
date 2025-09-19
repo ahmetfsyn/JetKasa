@@ -1,11 +1,5 @@
-import { useState } from "react";
-
 function App() {
-  return (
-    <>
-      <p>123</p>
-    </>
-  );
+  return <div></div>;
 }
 
 export default App;
