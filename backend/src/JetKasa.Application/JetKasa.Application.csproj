@@ -4,6 +4,14 @@
     <ProjectReference Include="..\JetKasa.Domain\JetKasa.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="TS.EntityFrameworkCore.GenericRepository" Version="9.0.4" />
+    <PackageReference Include="TS.Result" Version="9.0.1" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
