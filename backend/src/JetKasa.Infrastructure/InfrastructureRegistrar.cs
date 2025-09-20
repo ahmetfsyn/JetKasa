@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JetKasa.Infrastructure.Context;
+using JetKasa.Infrastructure.Repositories;
+using JetKasa.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using GenericRepository;
+using Scrutor;
+using JetKasa.Infrastructure.Context;
 
 namespace JetKasa.Infrastructure
 {
@@ -18,6 +18,18 @@ namespace JetKasa.Infrastructure
                 string connection = configuration.GetConnectionString("PostgreSql")!;
                 opt.UseNpgsql(connection);
             });
+
+            // UnitOfWork
+            services.AddScoped<IUnitOfWork>(srv => srv.GetRequiredService<AppDbContext>());
+
+            // Repositories
+            services.Scan(opt => opt
+          .FromAssemblies(typeof(InfrastructureRegistrar).Assembly)
+          .AddClasses(publicOnly: false)
+          .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+          .AsImplementedInterfaces()
+          .WithScopedLifetime()
+          );
 
             return services;
         }
