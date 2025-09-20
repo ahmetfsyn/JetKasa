@@ -4,7 +4,7 @@ import NotFound from "@/pages/NotFound";
 import CheckerRoutes from "./checker/CheckerRoutes";
 import PrivateRoute from "./PrivateRoute";
 import UserRoutes from "./user/UserRoutes";
-import Main from "@/pages/Main";
+import Welcome from "@/pages/Welcome";
 import MainLayout from "@/layouts/MainLayout";
 
 const AppRouter = () => {
@@ -19,12 +19,19 @@ const AppRouter = () => {
           </PrivateRoute>
         }
       />
-      <Route path="/user/*" element={<UserRoutes />} />
+      <Route
+        path="/user/*"
+        element={
+          <MainLayout>
+            <UserRoutes />
+          </MainLayout>
+        }
+      />
       <Route
         path="/"
         element={
           <MainLayout>
-            <Main />
+            <Welcome />
           </MainLayout>
         }
       />
