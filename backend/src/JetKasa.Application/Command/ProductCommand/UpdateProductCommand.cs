@@ -11,24 +11,27 @@ using TS.Result;
 namespace JetKasa.Application.Command.ProductCommand;
 
 public sealed record UpdateProductCommand(Guid Id
-, string Name, decimal Price, string Barcode, int Stock) : IRequest<Result<string>>;
+, string Name, decimal Price, decimal Discount, string Barcode) : IRequest<Result<string>>;
 
 public sealed class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
 {
     public UpdateProductCommandValidator()
     {
-        RuleFor(i => i.Name).NotEmpty()
-      .WithMessage("Ürün adı boş olamaz.")
-      .MinimumLength(2).WithMessage("Ürün adı en az 2 karakter olmalıdır!")
-      .MaximumLength(50).WithMessage("Ürün adı en fazla 50 karakter olmalıdır!");
+        RuleFor(x => x.Name)
+              .NotEmpty().WithMessage("Ürün adı boş olamaz.")
+              .MinimumLength(2).WithMessage("Ürün adı en az 2 karakter  olmalıdır.")
+              .MaximumLength(50).WithMessage("Ürün adı en fazla 50 karakter olmalıdır.");
 
-        RuleFor(i => i.Price).GreaterThan(0).WithMessage("Ürünün fiyatı 0 dan büyük olmalıdır!");
+        RuleFor(x => x.Price)
+            .GreaterThan(0).WithMessage("Ürünün fiyatı 0'dan büyük olmalıdır.");
 
-        RuleFor(i => i.Barcode)
-        .NotEmpty().WithMessage("Barkod boş olamaz!")
-        .Length(13).WithMessage("Barkod 13 haneli olmalıdır!");
+        RuleFor(x => x.Discount)
+            .InclusiveBetween(0, 100)
+            .WithMessage("İndirim 0 ile 100 arasında olmalıdır.");
 
-        RuleFor(i => i.Stock).GreaterThanOrEqualTo(0).WithMessage("Stok negatif olamaz!");
+        RuleFor(x => x.Barcode)
+            .NotEmpty().WithMessage("Barkod boş olamaz.")
+            .Length(13).WithMessage("Barkod 13 haneli olmalıdır.");
     }
 }
 
@@ -52,8 +55,8 @@ internal sealed class UpdateProductCommandHandler(IProductRepository productRepo
 
         product.Name = request.Name;
         product.Price = request.Price;
+        product.Discount = request.Discount;
         product.Barcode = request.Barcode;
-        product.Stock = request.Stock;
 
         productRepository.Update(product);
         await unitOfWork.SaveChangesAsync(cancellationToken);
