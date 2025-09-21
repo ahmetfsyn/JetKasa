@@ -1,5 +1,6 @@
 import { products } from "@/mock/mockData";
 import type { Product } from "@/types/entities";
+import { showMessage } from "@/utils/showMessage";
 import { useCallback, useState } from "react";
 
 export const useCart = (initial: Product[] = []) => {
@@ -9,11 +10,16 @@ export const useCart = (initial: Product[] = []) => {
     return products.find((prod) => prod.barcode === barcode);
   }, []);
 
-  // Ürün ekle
   const addProductByBarcode = useCallback(
     (barcode: string) => {
       const product = findProductByBarcode(barcode);
-      if (!product) return;
+      if (!product)
+        return showMessage({
+          message: "Girilen barkod numarasına ait ürün bulunamadı",
+          options: {
+            type: "error",
+          },
+        });
 
       setCartItems((prev) => {
         const existing = prev.find((p) => p.id === product.id);
@@ -35,13 +41,17 @@ export const useCart = (initial: Product[] = []) => {
     0
   );
 
+  //  ? indirimi hesaplamak istemiyoruz bu yüzden aşağıdaki kod satırını yorumladım
+
   const totalDiscount = cartItems.reduce(
     (acc, { price, discount = 0, quantity }) =>
       acc + price * discount * quantity,
     0
   );
 
+  // ? indirim tutarını hesaplamak istemiyoruz bu yüzden aşağıdaki totalı hesaplarken direkt subTotal a eşitledim
+
   const total = subTotal - totalDiscount;
 
-  return { cartItems, addProductByBarcode, subTotal, totalDiscount, total };
+  return { cartItems, addProductByBarcode, total, totalDiscount, subTotal };
 };
