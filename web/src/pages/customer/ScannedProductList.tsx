@@ -11,9 +11,10 @@ import { Input } from "@/components/ui/input";
 import { useCart } from "@/hooks/useCart";
 import type { Product } from "@/types/entities";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { showMessage } from "@/utils/showMessage";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRightIcon, ScanBarcode } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 
 const columns: ColumnDef<Product>[] = [
@@ -39,23 +40,32 @@ const ScannedProductList = () => {
   const navigate = useNavigate();
   const [barcode, setBarcode] = useState<string>("");
 
-  const { addProductByBarcode, cartItems, subTotal, total, totalDiscount } =
+  const { addProductByBarcode, cartItems, total, subTotal, totalDiscount } =
     useCart();
 
-  const onCancelShopping = async () => {
+  const onCancelShopping = useCallback(() => {
     console.log("İşlem İptal Edildi");
     return navigate("/");
-  };
+  }, [navigate]);
+
+  const handlePayment = useCallback(() => {
+    if (cartItems.length === 0) {
+      return showMessage({
+        message: "Sepete ürün eklemelisiniz",
+        options: {
+          type: "error",
+        },
+      });
+    }
+    return navigate("/payment");
+  }, [cartItems, navigate]);
 
   return (
     <div className=" flex h-full backdrop-blur-md">
       <div className="grid grid-cols-12 gap-2 w-full h-full text-white">
         <div className="bg-black/30 md:col-span-6 lg:col-span-8 rounded-md p-4  ">
-          <div>
-            <p className="text-2xl">Sepetiniz</p>
-            <hr className="my-4" />
-          </div>
-          <div className="mt-4">
+          <p className="text-2xl">Sepetiniz</p>
+          <div className="my-8">
             <DataTable columns={columns} data={cartItems} />
           </div>
         </div>
@@ -88,7 +98,7 @@ const ScannedProductList = () => {
           </div>
           <div>
             <Card className="bg-transparent border-none text-white ">
-              <CardHeader className="">
+              <CardHeader className="p-0">
                 <CardTitle className="text-xl">Alışveriş Özeti</CardTitle>
 
                 <div className="flex flex-row justify-between">
@@ -114,7 +124,7 @@ const ScannedProductList = () => {
                   </CardTitle>
                 </div>
               </CardHeader>
-              <CardAction className="w-full px-6 gap-2 flex flex-row">
+              <CardAction className="w-full  gap-2 flex flex-row">
                 <Button
                   onClick={onCancelShopping}
                   variant={"destructive"}
@@ -122,8 +132,12 @@ const ScannedProductList = () => {
                 >
                   İptal Et
                 </Button>
-                <Button className=" flex-[3] lg:h-20 md:h-18 text-xl bg-green-300 hover:bg-green-900 hover:text-gray-50 text-black">
-                  Ödemeye Geç
+                <Button
+                  onClick={handlePayment}
+                  disabled={cartItems.length === 0}
+                  className=" flex-[3] lg:h-20 md:h-18 text-xl bg-green-300 hover:bg-green-900 hover:text-gray-50 text-black"
+                >
+                  Ödeme Yap
                 </Button>
               </CardAction>
             </Card>
