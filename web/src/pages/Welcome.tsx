@@ -6,7 +6,7 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   const onClickScreen = useCallback(() => {
-    return navigate("user/scanned-product-list");
+    return navigate("customer/scanned-product-list");
   }, [navigate]);
 
   return (
@@ -14,7 +14,6 @@ const Welcome = () => {
       onClick={onClickScreen}
       className="flex h-full cursor-pointer items-center flex-col gap-50 justify-center "
     >
-      {/* Yazılar ve cam efekti */}
       <div className="flex flex-col items-center p-6 rounded-xl gap-4     bg-black/30 backdrop-blur-md">
         <p className="md:text-5xl lg:text-7xl  text-green-300 uppercase">
           JetMarket'e Hoşgeldiniz

@@ -1,7 +1,7 @@
-import ScannedProductList from "@/pages/user/ScannedProductList";
+import ScannedProductList from "@/pages/customer/ScannedProductList";
 import { Route, Routes } from "react-router";
 
-const UserRoutes = () => {
+const CustomerRoutes = () => {
   return (
     <Routes>
       <Route
@@ -12,4 +12,4 @@ const UserRoutes = () => {
   );
 };
 
-export default UserRoutes;
+export default CustomerRoutes;

@@ -3,9 +3,10 @@ import AuthRoutes from "./auth/AuthRoutes";
 import NotFound from "@/pages/NotFound";
 import CheckerRoutes from "./checker/CheckerRoutes";
 import PrivateRoute from "./PrivateRoute";
-import UserRoutes from "./user/UserRoutes";
 import Welcome from "@/pages/Welcome";
 import MainLayout from "@/layouts/MainLayout";
+import CustomerRoutes from "./customer/CustomerRoutes";
+import PaymentRoutes from "./payment/PaymentRoutes";
 
 const AppRouter = () => {
   return (
@@ -20,10 +21,19 @@ const AppRouter = () => {
         }
       />
       <Route
-        path="/user/*"
+        path="/customer/*"
         element={
           <MainLayout>
-            <UserRoutes />
+            <CustomerRoutes />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/payment/*"
+        element={
+          <MainLayout>
+            <PaymentRoutes />
           </MainLayout>
         }
       />
