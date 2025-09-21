@@ -6,7 +6,7 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   const onClickScreen = useCallback(() => {
-    return navigate("customer/scanned-product-list");
+    return navigate("/customer/scanned-product-list");
   }, [navigate]);
 
   return (
