@@ -10,6 +10,10 @@ public abstract class Entity
     public Entity()
     {
         Id = Guid.CreateVersion7();
+        CreatedAt = DateTimeOffset.UtcNow;
+        UpdatedAt = DateTimeOffset.UtcNow;
     }
     public Guid Id { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 }

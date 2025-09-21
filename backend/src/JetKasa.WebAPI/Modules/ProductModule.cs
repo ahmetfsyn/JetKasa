@@ -30,7 +30,7 @@ public static class ProductModule
             return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
         }).Produces<Result<string>>();
 
-        groupBuilder.MapDelete("/{id:guid}", async (ISender sender, Guid id, CancellationToken cancellationToken) =>
+        groupBuilder.MapDelete("/delete/{id:guid}", async (ISender sender, Guid id, CancellationToken cancellationToken) =>
         {
             var response = await sender.Send(new DeleteProductCommand(id), cancellationToken);
             return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);

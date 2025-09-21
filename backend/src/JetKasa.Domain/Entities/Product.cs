@@ -11,9 +11,8 @@ public class Product : Entity
 {
     public string Name { get; set; } = default!;
     public decimal Price { get; set; }
+    public decimal? Discount { get; set; }
     public string Barcode { get; set; } = default!;
-    public int Stock { get; set; } = 0;
 
     public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
-
 }

@@ -11,7 +11,7 @@ namespace JetKasa.Application.Queries.ProductQuery;
 
 public sealed record GetProductByIdQuery(Guid Id) : IRequest<Result<Product>>;
 
-public class GetProductByIdQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductByIdQuery, Result<Product>>
+internal sealed class GetProductByIdQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductByIdQuery, Result<Product>>
 {
     public async Task<Result<Product>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
@@ -21,7 +21,6 @@ public class GetProductByIdQueryHandler(IProductRepository productRepository) : 
         {
             return Result<Product>.Failure("Ürün bulunamadı!");
         }
-
         return Result<Product>.Succeed(product);
     }
 }

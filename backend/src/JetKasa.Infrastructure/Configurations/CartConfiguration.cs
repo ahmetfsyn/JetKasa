@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using JetKasa.Domain.Carts;
+using JetKasa.Domain.Payments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,10 +9,20 @@ namespace JetKasa.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.HasOne(c => c.User)
-            .WithMany(u => u.Carts)
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(c => c.Status)
+                   .HasConversion<string>();
+
+            // CartItem ile ilişki
+            builder.HasMany(c => c.CartItems)
+                   .WithOne(ci => ci.Cart)
+                   .HasForeignKey(ci => ci.CartId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            // Payment ile bire bir ilişki
+            builder.HasOne(c => c.Payment)
+                   .WithOne(p => p.Cart)
+                   .HasForeignKey<Payment>(p => p.CartId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
