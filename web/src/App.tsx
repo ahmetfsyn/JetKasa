@@ -1,16 +1,5 @@
-import { BrowserRouter } from "react-router";
-import AppRouter from "./routes/AppRouter";
-import { ToastContainer } from "react-toastify";
-
-const App = () => {
-  return (
-    <>
-      <BrowserRouter>
-        <AppRouter />
-      </BrowserRouter>
-      <ToastContainer />
-    </>
-  );
-};
+function App() {
+  return <div></div>;
+}
 
 export default App;
