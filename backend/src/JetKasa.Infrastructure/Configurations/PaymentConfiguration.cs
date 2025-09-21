@@ -1,25 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using JetKasa.Domain.Carts;
 using JetKasa.Domain.Payments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace JetKasa.Infrastructure.Configurations
+namespace JetKasa.Infrastructure.Configurations;
+
+public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 {
-    public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
+    public void Configure(EntityTypeBuilder<Payment> builder)
     {
-        public void Configure(EntityTypeBuilder<Payment> builder)
-        {
-            builder.Property(p => p.Amount)
-                    .HasColumnType("decimal(10,2)")
-                    .IsRequired();
-            builder.Property(p => p.Status)
-                   .HasMaxLength(50)
-                   .HasDefaultValue("Success");
-            builder.Property(p => p.CardLast4)
-                   .HasMaxLength(4);
-        }
+        // Cart ile bire bir ilişki 
+        builder.HasOne(p => p.Cart)
+               .WithOne(c => c.Payment)
+               .HasForeignKey<Payment>(p => p.CartId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(p => p.Method)
+               .HasConversion<string>();
     }
 }
