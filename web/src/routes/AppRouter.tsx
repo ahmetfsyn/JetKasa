@@ -7,6 +7,7 @@ import Welcome from "@/pages/Welcome";
 import MainLayout from "@/layouts/MainLayout";
 import CustomerRoutes from "./customer/CustomerRoutes";
 import PaymentRoutes from "./payment/PaymentRoutes";
+import { CartGuard } from "@/layouts/CartGuard";
 
 const AppRouter = () => {
   return (
@@ -32,9 +33,11 @@ const AppRouter = () => {
       <Route
         path="/payment/*"
         element={
-          <MainLayout>
-            <PaymentRoutes />
-          </MainLayout>
+          <CartGuard>
+            <MainLayout>
+              <PaymentRoutes />
+            </MainLayout>
+          </CartGuard>
         }
       />
       <Route
