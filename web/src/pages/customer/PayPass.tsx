@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const PayPass = () => {
   return (
-    <div className="flex h-full items-center justify-center bg-black/30 backdrop-blur-md">
+    <div className="flex h-full items-center justify-center bg-black/30 backdrop-blur-md rounded-md">
       <Card className="w-full max-w-lg bg-white/5 text-white shadow-xl rounded-2xl border border-white/10 p-6">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
