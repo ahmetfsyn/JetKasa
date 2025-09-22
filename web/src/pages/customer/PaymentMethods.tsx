@@ -7,9 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import usePaymentStore from "@/store/usePaymentStore";
 import type { PaymentId, PaymentMethod } from "@/types/entities";
 import { CreditCard, Smartphone, Wallet } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const paymentOptions: PaymentMethod[] = [
@@ -35,29 +36,27 @@ const paymentOptions: PaymentMethod[] = [
   },
 ];
 
+const paymentRoutes: Record<PaymentId, string> = {
+  1: "/payment/paypass",
+  2: "/payment/mobile",
+  3: "/payment/cash",
+};
+
 const PaymentMethods = () => {
   const navigate = useNavigate();
+  const { setSelectedPaymentMethod } = usePaymentStore();
   const [selectedId, setSelectedId] = useState<PaymentId | null>(null);
 
-  const handleContinue = useCallback(() => {
-    switch (selectedId) {
-      case 1:
-        navigate("/payment/paypass");
-        break;
-      case 2:
-        navigate("/payment/mobile");
-        break;
-      case 3:
-        navigate("/payment/cash");
-        break;
-      default:
-        break;
+  const handleContinue = () => {
+    if (selectedId) {
+      setSelectedPaymentMethod(selectedId);
+      navigate(paymentRoutes[selectedId]);
     }
-  }, [selectedId, navigate]);
+  };
 
   return (
-    <div className="flex h-full items-center justify-center backdrop-blur-md bg-black/30 rounded-md">
-      <Card className="md:w-[75%] lg:w-full max-w-2xl bg-white/5 text-white shadow-xl p-4 rounded-2xl border border-white/10">
+    <div className="flex h-full items-center justify-center backdrop-blur-md bg-black/30 rounded-md p-4">
+      <Card className="md:w-[75%] lg:w-full max-w-2xl bg-white/5 text-white shadow-xl rounded-2xl border border-white/10">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold tracking-wide">
             Nasıl Ödeme Yapmak İstersiniz?
@@ -65,11 +64,11 @@ const PaymentMethods = () => {
         </CardHeader>
 
         <CardContent className="space-y-4 px-4">
-          {paymentOptions.map((opt) => (
+          {paymentOptions.map((option) => (
             <PaymentOption
-              key={opt.id}
-              option={opt}
-              selected={selectedId === opt.id}
+              key={option.id}
+              option={option}
+              selected={selectedId === option.id}
               onSelect={setSelectedId}
             />
           ))}

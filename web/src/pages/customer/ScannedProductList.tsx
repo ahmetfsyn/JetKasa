@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/hooks/useCart";
+import { useProductByBarcode } from "@/hooks/useProductByBarcode";
 import type { Product } from "@/types/entities";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { showMessage } from "@/utils/showMessage";
@@ -39,9 +40,8 @@ const columns: ColumnDef<Product>[] = [
 const ScannedProductList = () => {
   const navigate = useNavigate();
   const [barcode, setBarcode] = useState<string>("");
-
-  const { addProductByBarcode, cartItems, total, subTotal, totalDiscount } =
-    useCart();
+  const { handleAddToCart, isFetching } = useProductByBarcode();
+  const { total, subTotal, totalDiscount, cartItems } = useCart();
 
   const onCancelShopping = useCallback(() => {
     console.log("İşlem İptal Edildi");
@@ -90,8 +90,9 @@ const ScannedProductList = () => {
             />
             <Button
               size="icon"
-              onClick={() => addProductByBarcode(barcode)}
-              className="md:size-12 lg:size-14 bg-green-300 hover:bg-green-900 hover:text-gray-50 text-black "
+              disabled={isFetching}
+              onClick={() => handleAddToCart(barcode)}
+              className="md:size-12 lg:size-14 bg-green-300 hover:bg-green-600 hover:text-gray-50 text-black "
             >
               <ChevronRightIcon />
             </Button>
@@ -135,7 +136,7 @@ const ScannedProductList = () => {
                 <Button
                   onClick={handlePayment}
                   disabled={cartItems.length === 0}
-                  className=" flex-[3] lg:h-20 md:h-18 text-xl bg-green-300 hover:bg-green-900 hover:text-gray-50 text-black"
+                  className=" flex-[3] lg:h-20 md:h-18 text-xl bg-green-300 hover:bg-green-600 hover:text-gray-50 text-black"
                 >
                   Ödeme Yap
                 </Button>
