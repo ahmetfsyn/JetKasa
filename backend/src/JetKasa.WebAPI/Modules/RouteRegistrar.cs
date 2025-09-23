@@ -10,5 +10,6 @@ public static class RouteRegistrar
     public static void RegisterRoutes(this IEndpointRouteBuilder app)
     {
         app.RegisterProductRoutes();
+        app.RegisterCartRoutes();
     }
 }
