@@ -11,5 +11,6 @@ public static class RouteRegistrar
     {
         app.RegisterProductRoutes();
         app.RegisterCartRoutes();
+        app.RegisterPaymentRoutes();
     }
 }
