@@ -60,3 +60,23 @@ coverage/
 # Mac / Windows system files
 .DS_Store
 Thumbs.db
+
+
+# React Native ---
+# Önce her şeyi ignore et
+/*
+
+# Ancak pos klasörünü ignore etme
+!/pos
+
+# pos klasörünün içindekilerden de node_modules, build gibi şeyleri ignore et
+/pos/node_modules
+/pos/build
+/pos/.gradle
+/pos/.idea
+/pos/.DS_Store
+/pos/DerivedData
+/pos/.metro-health-check*
+/pos/coverage
+/pos/npm-debug.log
+/pos/yarn-error.log
