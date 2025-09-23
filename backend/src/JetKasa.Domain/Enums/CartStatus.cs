@@ -1,8 +1,7 @@
 namespace JetKasa.Domain.Enums
 {
-    public enum CardStatus
+    public enum CartStatus
     {
-        Pending,
         Active,
         Completed,
         Cancelled

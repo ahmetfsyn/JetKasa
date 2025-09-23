@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using JetKasa.Application;
 using JetKasa.Infrastructure;
 using JetKasa.WebAPI.Modules;
@@ -9,6 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 

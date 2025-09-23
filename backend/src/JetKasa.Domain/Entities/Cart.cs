@@ -11,7 +11,7 @@ namespace JetKasa.Domain.Carts;
 
 public class Cart : Entity
 {
-    public CardStatus Status { get; set; } = CardStatus.Pending;
+    public CartStatus Status { get; set; } = CartStatus.Active;
 
     public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
     public Payment? Payment { get; set; }
