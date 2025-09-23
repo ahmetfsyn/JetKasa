@@ -2,7 +2,6 @@
 using GenericRepository;
 using JetKasa.Application.Interfaces;
 using JetKasa.Domain.Dtos;
-using JetKasa.Domain.Payments;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TS.Result;
@@ -16,14 +15,28 @@ internal sealed class GetPaymentByCartIdQueryHandler(IPaymentRepository paymentR
     public async Task<Result<PaymentDto>> Handle(GetPaymentByCartIdQuery request, CancellationToken cancellationToken)
     {
         var payment = await paymentRepository.GetAll()
-         .Where(p => p.CartId == request.CartId)
+         .Include(c => c.Cart)
+         .ThenInclude(i => i.CartItems)
+         .ThenInclude(p => p.Product)
+         .Where(c => c.CartId == request.CartId)
          .Select(p => new PaymentDto
          {
              Id = p.Id,
-             CartId = p.CartId,
-             Total = p.Total,
+             PaidAt = p.PaidAt,
              Method = p.Method,
-             PaidAt = p.PaidAt
+             CartDto = new CartDto
+             {
+                 Id = p.Cart.Id,
+                 ItemDtos = p.Cart.CartItems.Select(i => new CartItemDto
+                 {
+                     Id = i.Id,
+                     ProductName = i.Product.Name,
+                     Quantity = i.Quantity,
+                     Discount = i.Discount,
+                     Price = i.Discount
+                 }).ToList()
+             },
+             Total = p.Total,
          })
          .FirstOrDefaultAsync(cancellationToken);
 
