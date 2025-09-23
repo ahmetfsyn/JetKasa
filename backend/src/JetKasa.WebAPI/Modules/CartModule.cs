@@ -33,7 +33,7 @@ namespace JetKasa.WebAPI.Modules
 
             }).Produces<Result<string>>();
 
-            app.MapPost("/complete/{id:guid}", async (ISender sender, Guid id, CancellationToken cancellationToken) =>
+            groupBuilder.MapPost("/complete/{id:guid}", async (ISender sender, Guid id, CancellationToken cancellationToken) =>
             {
                 var response = await sender.Send(new CompletedCartCommand(id), cancellationToken);
 
