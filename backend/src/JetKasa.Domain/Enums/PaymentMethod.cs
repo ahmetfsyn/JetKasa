@@ -2,7 +2,7 @@ namespace JetKasa.Domain.Enums
 {
     public enum PaymentMethod
     {
-        CreditCard,
+        Card,
         Cash,
         Mobile
 
