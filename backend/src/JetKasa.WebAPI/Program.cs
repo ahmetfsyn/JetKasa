@@ -3,6 +3,7 @@ using JetKasa.Application;
 using JetKasa.Infrastructure;
 using JetKasa.WebAPI.Modules;
 using Scalar.AspNetCore;
+using JetKasa.WebAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddSignalR();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -18,6 +20,9 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 var app = builder.Build();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 // Middleware
 app.UseHttpsRedirection();
 
@@ -25,6 +30,7 @@ app.UseHttpsRedirection();
 app.RegisterRoutes();
 
 // OpenAPI / Scalar UI
+app.MapHub<PaymentHub>("/hub");
 app.MapOpenApi();
 app.MapScalarApiReference();
 app.MapGet("/", () => Results.Redirect("/scalar/v1"));
