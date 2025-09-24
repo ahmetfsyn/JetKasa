@@ -12,8 +12,10 @@ public sealed class PaymentDto
     public PaymentMethod Method { get; set; } = PaymentMethod.Card;
     public CartDto CartDto { get; set; } = default!;
     public decimal Total { get; set; }
+    public decimal OriginalTotal { get; set; }
     public DateTimeOffset PaidAt { get; set; } = DateTimeOffset.UtcNow;
 
 
-
+    public string UserName { get; set; } = default!;
+    public string UserEmail { get; set; } = default!;
 }

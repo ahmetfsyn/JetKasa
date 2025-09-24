@@ -33,7 +33,7 @@ internal sealed class GetPaymentByCartIdQueryHandler(IPaymentRepository paymentR
                      ProductName = i.Product.Name,
                      Quantity = i.Quantity,
                      Discount = i.Discount,
-                     Price = i.Discount
+                     Price = i.Price
                  }).ToList()
              },
              Total = p.Total,
