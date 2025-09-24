@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetKasa.Application.Command.PaymentCommand;
 using JetKasa.Application.Queries.PaymentQuery;
+using JetKasa.WebAPI.Hubs;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using TS.Result;
 
 namespace JetKasa.WebAPI.Modules
@@ -15,9 +17,20 @@ namespace JetKasa.WebAPI.Modules
         {
             RouteGroupBuilder groupBuilder = app.MapGroup("/payment").WithTags("Payment");
 
-            groupBuilder.MapPost("/create/{CartId:guid}", async (ISender sender, Guid CartId, CancellationToken cancellationToken) =>
+            groupBuilder.MapPost("/create/{CartId:guid}", async (ISender sender, Guid CartId, IHubContext<PaymentHub> hub, CancellationToken cancellationToken) =>
             {
                 var response = await sender.Send(new CreatePaymentByCartIdCommand(CartId), cancellationToken);
+
+                if (response.IsSuccessful)
+                {
+                    await hub.Clients.Group(CartId.ToString())
+                        .SendAsync("PaymentCompleted", "Success");
+                }
+                else
+                {
+                    await hub.Clients.Group(CartId.ToString())
+                        .SendAsync("PaymentCompleted", "Failed");
+                }
 
                 return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
             }).Produces<Result<string>>();
