@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 using JetKasa.Application;
 using JetKasa.Infrastructure;
+using JetKasa.WebAPI.Hubs;
 using JetKasa.WebAPI.Modules;
 using Scalar.AspNetCore;
-using JetKasa.WebAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
