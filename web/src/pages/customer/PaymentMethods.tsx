@@ -78,6 +78,7 @@ const PaymentMethods = () => {
           <Button
             disabled={!selectedId}
             onClick={handleContinue}
+            soundType={true}
             className="flex-1 lg:h-20 md:h-18 text-xl bg-green-300 hover:bg-green-600 hover:text-gray-50 text-black"
           >
             Devam Et

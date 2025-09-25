@@ -1,13 +1,16 @@
+import { useSound } from "@/hooks/useSound";
 import { Plane } from "lucide-react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 
 const Welcome = () => {
   const navigate = useNavigate();
+  const playSound = useSound();
 
   const onClickScreen = useCallback(() => {
+    playSound();
     return navigate("/customer/scanned-product-list");
-  }, [navigate]);
+  }, [navigate, playSound]);
 
   return (
     <div
