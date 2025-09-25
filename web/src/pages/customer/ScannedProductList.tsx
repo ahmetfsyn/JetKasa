@@ -64,16 +64,16 @@ const ScannedProductList = () => {
 
   return (
     <>
-      <div className=" flex h-full backdrop-blur-md">
-        <div className="grid grid-cols-12 gap-2 w-full h-full text-white">
-          <div className="bg-black/30 md:col-span-6 lg:col-span-8 rounded-md p-4  ">
+      <div className=" flex h-full ">
+        <div className="grid grid-cols-12  gap-2 w-full h-full text-white">
+          <div className="bg-black/30 md:col-span-6 lg:col-span-8 backdrop-blur-md rounded-md p-4  ">
             <p className="text-2xl">Sepetiniz</p>
             <div className="my-8">
               <DataTable columns={columns} data={cartItems} />
             </div>
           </div>
 
-          <div className="bg-black/30 md:col-span-6 lg:col-span-4  rounded-md p-4 flex justify-between flex-col">
+          <div className="bg-black/30 md:col-span-6 lg:col-span-4  backdrop-blur-md rounded-md p-4 flex justify-between flex-col">
             {/* <Card className="bg-transparent text-white  justify-center md:h-fit lg:p-10 md:p-6 items-center border-dashed border-2">
             <ScanBarcode className="text-green-300 " size={64} />
             <div className="flex flex-col items-center">
@@ -105,7 +105,7 @@ const ScannedProductList = () => {
               <Button
                 size="icon"
                 soundType={manuelBarcode.length > 0 && true}
-                disabled={isFetching}
+                disabled={isFetching || !manuelBarcode}
                 onClick={() => handleAddToCart(manuelBarcode)}
                 className="md:size-12 lg:size-14 bg-green-300 hover:bg-green-600 hover:text-gray-50 text-black "
               >
@@ -150,6 +150,7 @@ const ScannedProductList = () => {
                   </Button>
                   <Button
                     onClick={handlePayment}
+                    soundType={true}
                     disabled={cartItems.length === 0}
                     className=" flex-[3] lg:h-20 md:h-18 text-xl bg-green-300 hover:bg-green-600 hover:text-gray-50 text-black"
                   >
