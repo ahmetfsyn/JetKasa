@@ -1,3 +1,7 @@
+# ==========================
+# Backend / .NET
+# ==========================
+
 # Build outputs
 backend/src/**/bin/
 backend/src/**/obj/
@@ -61,15 +65,30 @@ coverage/
 .DS_Store
 Thumbs.db
 
+# ==========================
+# React / Web
+# ==========================
 
-# React Native ---
-# Önce her şeyi ignore et
-/*
+# Node modules & build
+node_modules/
+build/
+dist/
 
-# Ancak pos klasörünü ignore etme
+# Web klasörü dahil, ama gereksizleri ignore et
+!/web
+/web/node_modules
+/web/build
+/web/dist
+/web/.DS_Store
+
+# ==========================
+# React Native / POS
+# ==========================
+
+# Pos klasörünü takip et
 !/pos
 
-# pos klasörünün içindekilerden de node_modules, build gibi şeyleri ignore et
+# pos altındaki gereksiz dosyalar
 /pos/node_modules
 /pos/build
 /pos/.gradle

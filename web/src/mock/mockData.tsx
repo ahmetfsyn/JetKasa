@@ -6,7 +6,7 @@ export const products: Product[] = [
     price: 100,
     name: "Ülker Muzlu Gofretdsadasdaasdasdasdassdss aksn dlkasn lkdasn kldasnklssd",
     quantity: 1,
-    barcode: "123321",
+    barcode: "8697433680118",
     discount: 0,
   },
   {
@@ -14,7 +14,7 @@ export const products: Product[] = [
     price: 125,
     name: "Ülker Kakaolu Gofret",
     quantity: 2,
-    barcode: "234432",
+    barcode: "9786254053764",
     discount: 0.1,
   },
   {
@@ -22,7 +22,7 @@ export const products: Product[] = [
     price: 125,
     name: "Ülker Çilekli Gofret",
     quantity: 3,
-    barcode: "456654",
+    barcode: "5000112666076",
     discount: 0.15,
   },
 ];
