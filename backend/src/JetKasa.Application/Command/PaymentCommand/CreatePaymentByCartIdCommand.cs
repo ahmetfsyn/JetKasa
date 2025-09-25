@@ -13,7 +13,8 @@ using TS.Result;
 
 namespace JetKasa.Application.Command.PaymentCommand;
 
-public sealed record CreatePaymentByCartIdCommand(Guid CartId) : IRequest<Result<string>>;
+public sealed record CreatePaymentByCartIdCommand(Guid CartId, string UserName,
+    string UserEmail) : IRequest<Result<string>>;
 
 internal sealed class CreatePaymentByCartIdCommandHandler(ICartRepository cartRepository, IPaymentRepository paymentRepository, IUnitOfWork unitOfWork, INovuService novuService) : IRequestHandler<CreatePaymentByCartIdCommand, Result<string>>
 {
@@ -61,6 +62,8 @@ internal sealed class CreatePaymentByCartIdCommandHandler(ICartRepository cartRe
         var paymentDto = new PaymentDto
         {
             Id = payment.Id,
+            UserName = request.UserName,
+            UserEmail = request.UserEmail,
             PaidAt = payment.PaidAt,
             Method = payment.Method,
             Total = payment.Total,

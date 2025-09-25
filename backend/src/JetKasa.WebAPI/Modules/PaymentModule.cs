@@ -17,9 +17,9 @@ namespace JetKasa.WebAPI.Modules
         {
             RouteGroupBuilder groupBuilder = app.MapGroup("/payment").WithTags("Payment");
 
-            groupBuilder.MapPost("/create/{CartId:guid}", async (ISender sender, Guid CartId, IHubContext<PaymentHub> hub, CancellationToken cancellationToken) =>
+            groupBuilder.MapPost("/create/{CartId:guid}", async (ISender sender, Guid CartId, string UserName, string UserEmail, IHubContext<PaymentHub> hub, CancellationToken cancellationToken) =>
             {
-                var response = await sender.Send(new CreatePaymentByCartIdCommand(CartId), cancellationToken);
+                var response = await sender.Send(new CreatePaymentByCartIdCommand(CartId, UserName, UserEmail), cancellationToken);
 
                 if (response.IsSuccessful)
                 {
