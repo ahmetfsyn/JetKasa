@@ -2,9 +2,11 @@ import { getProductByBarcode } from "@/services/productService";
 import useCartStore from "@/store/useCartStore";
 import { showMessage } from "@/utils/showMessage";
 import { useQuery } from "@tanstack/react-query";
+import { useSound } from "./useSound";
 
 export const useProductByBarcode = () => {
   const { addProductToCart } = useCartStore();
+  const playSound = useSound();
 
   const { data, isFetching } = useQuery({
     queryKey: ["product"],
@@ -16,6 +18,7 @@ export const useProductByBarcode = () => {
     try {
       const product = await getProductByBarcode(barcode);
       if (product) {
+        playSound();
         return addProductToCart(product);
       }
       return showMessage({
