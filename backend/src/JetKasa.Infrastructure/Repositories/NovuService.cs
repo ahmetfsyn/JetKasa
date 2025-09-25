@@ -26,13 +26,13 @@ public class NovuService : INovuService
         string userName = paymentDto.UserName;
         string userEmail = paymentDto.UserEmail;
 
-        string subscriberId = Guid.NewGuid().ToString();
+        string subscriberId = userEmail.ToLowerInvariant();
 
         await novu.Subscribers.CreateAsync(new CreateSubscriberRequestDto
         {
             SubscriberId = subscriberId,
             FirstName = userName,
-            Email = userEmail
+            Email = userEmail,
         });
 
         var workflowId = "send-receipt";
