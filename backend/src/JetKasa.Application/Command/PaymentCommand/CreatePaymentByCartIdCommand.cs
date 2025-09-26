@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using GenericRepository;
 using JetKasa.Application.Interfaces;
 using JetKasa.Domain.Dtos;
@@ -15,6 +16,20 @@ namespace JetKasa.Application.Command.PaymentCommand;
 
 public sealed record CreatePaymentByCartIdCommand(Guid CartId, string UserName,
     string UserEmail) : IRequest<Result<string>>;
+
+public sealed class CreatePaymentByCartIdCommandValidator : AbstractValidator<CreatePaymentByCartIdCommand>
+{
+    public CreatePaymentByCartIdCommandValidator()
+    {
+        RuleFor(i => i.UserName)
+            .MinimumLength(3)
+            .WithMessage("İsim en az 3 karakter içermelidir.");
+
+        RuleFor(i => i.UserEmail)
+            .EmailAddress()
+            .WithMessage("Geçerli bir e-posta adresi giriniz.");
+    }
+}
 
 internal sealed class CreatePaymentByCartIdCommandHandler(ICartRepository cartRepository, IPaymentRepository paymentRepository, IUnitOfWork unitOfWork, INovuService novuService) : IRequestHandler<CreatePaymentByCartIdCommand, Result<string>>
 {
