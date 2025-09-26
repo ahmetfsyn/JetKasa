@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.8.2" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.8.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JetKasa.Application\JetKasa.Application.csproj" />
+    <ProjectReference Include="..\JetKasa.Infrastructure\JetKasa.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
