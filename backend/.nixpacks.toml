@@ -3,6 +3,7 @@ nixPkgs = ["dotnet-sdk_9"]
 
 [phases.build]
 cmds = [
+  "dotnet restore backend/src/JetKasa.WebAPI/JetKasa.WebAPI.csproj",
   "dotnet publish backend/src/JetKasa.WebAPI/JetKasa.WebAPI.csproj -c Release -o out"
 ]
 
