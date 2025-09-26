@@ -1,19 +1,18 @@
-# Build aşaması
+# Build
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
-# Solution ve tüm kaynak kodunu kopyala
-COPY . .
+# Tüm projeleri kopyala
+COPY src ./src
+COPY *.sln ./
 
-# Restore
-RUN dotnet restore
+# Restore ve publish
+RUN dotnet restore src/JetKasa.WebAPI/JetKasa.WebAPI.csproj
+RUN dotnet publish src/JetKasa.WebAPI/JetKasa.WebAPI.csproj -c Release -o /app/out
 
-# Publish (WebAPI projesi)
-RUN dotnet publish src/JetKasa.WebAPI/JetKasa.WebAPI.csproj -c Release -o out
-
-# Runtime aşaması
+# Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
-EXPOSE 5000
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "JetKasa.WebAPI.dll"]
