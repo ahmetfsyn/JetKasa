@@ -54,8 +54,9 @@ function Button({
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (soundType) {
       playSound();
+    } else {
+      playSound("/sounds/negative-select-sound.wav");
     }
-    playSound("/sounds/negative-select-sound.wav");
 
     onClick?.(e);
   };
