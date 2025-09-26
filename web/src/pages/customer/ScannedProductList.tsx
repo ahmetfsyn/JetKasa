@@ -17,6 +17,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRightIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
+import BarcodeScanner from "react-qr-barcode-scanner";
 
 const columns: ColumnDef<Product>[] = [
   {
@@ -36,7 +37,6 @@ const columns: ColumnDef<Product>[] = [
     },
   },
 ];
-import BarcodeScanner from "react-qr-barcode-scanner";
 
 const ScannedProductList = () => {
   const navigate = useNavigate();
@@ -106,7 +106,10 @@ const ScannedProductList = () => {
                 size="icon"
                 soundType={manuelBarcode.length > 0 && true}
                 disabled={isFetching || !manuelBarcode}
-                onClick={() => handleAddToCart(manuelBarcode)}
+                onClick={() => {
+                  handleAddToCart(manuelBarcode);
+                  setManuelBarcode("");
+                }}
                 className="md:size-12 lg:size-14 bg-green-300 hover:bg-green-600 hover:text-gray-50 text-black "
               >
                 <ChevronRightIcon />
