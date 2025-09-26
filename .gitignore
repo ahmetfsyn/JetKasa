@@ -1,3 +1,7 @@
+# ==========================
+# Backend / .NET
+# ==========================
+
 # Build outputs
 backend/src/**/bin/
 backend/src/**/obj/
@@ -60,3 +64,38 @@ coverage/
 # Mac / Windows system files
 .DS_Store
 Thumbs.db
+
+# ==========================
+# React / Web
+# ==========================
+
+# Node modules & build
+node_modules/
+build/
+dist/
+
+# Web klasörü dahil, ama gereksizleri ignore et
+!/web
+/web/node_modules
+/web/build
+/web/dist
+/web/.DS_Store
+
+# ==========================
+# React Native / POS
+# ==========================
+
+# Pos klasörünü takip et
+!/pos
+
+# pos altındaki gereksiz dosyalar
+/pos/node_modules
+/pos/build
+/pos/.gradle
+/pos/.idea
+/pos/.DS_Store
+/pos/DerivedData
+/pos/.metro-health-check*
+/pos/coverage
+/pos/npm-debug.log
+/pos/yarn-error.log
