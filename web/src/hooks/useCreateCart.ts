@@ -11,8 +11,7 @@ export const useCreateCart = () => {
 
   const handleCreateCart = async () => {
     try {
-      const data = await mutation.mutateAsync();
-      console.log("data : ", data);
+      const { data } = await mutation.mutateAsync();
       addCartToStore(data);
       return data;
     } catch (error) {

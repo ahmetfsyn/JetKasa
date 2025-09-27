@@ -5,12 +5,17 @@ export type CartStore = {
   cartItems: Product[];
   cartId: string;
   addProductToCart: (product: Product) => void;
+  setCartItems: (products: Product[]) => void;
   createCart: (cartId: string) => void;
 };
 
 const useCartStore = create<CartStore>((set) => ({
   cartItems: [],
   cartId: "",
+  setCartItems: (products) =>
+    set(() => ({
+      cartItems: products,
+    })),
   createCart: (cartId) =>
     set(() => ({
       cartId: cartId,

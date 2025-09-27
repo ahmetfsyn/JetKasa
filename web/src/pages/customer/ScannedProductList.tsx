@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/hooks/useCart";
-import { useProductByBarcode } from "@/hooks/useProductByBarcode";
 import type { Product } from "@/types/entities";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { showMessage } from "@/utils/showMessage";
@@ -19,10 +18,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import BarcodeScanner from "react-qr-barcode-scanner";
 import { useCreateCart } from "@/hooks/useCreateCart";
+import { useAddProductToCart } from "@/hooks/useAddProductToCart";
 
 const columns: ColumnDef<Product>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "productName",
     header: "Ürün",
   },
   {
@@ -42,7 +42,7 @@ const columns: ColumnDef<Product>[] = [
 const ScannedProductList = () => {
   const navigate = useNavigate();
   const [manuelBarcode, setManuelBarcode] = useState<string>("");
-  const { handleAddToCart, isFetching } = useProductByBarcode();
+  const { handleAddToCart, isPending } = useAddProductToCart();
   const { total, subTotal, totalDiscount, cartItems } = useCart();
   const { createCart } = useCreateCart();
 
@@ -112,7 +112,7 @@ const ScannedProductList = () => {
               <Button
                 size="icon"
                 soundType={manuelBarcode.length > 0 && true}
-                disabled={isFetching || !manuelBarcode}
+                disabled={isPending || !manuelBarcode}
                 onClick={() => {
                   handleAddToCart(manuelBarcode);
                   setManuelBarcode("");
@@ -153,6 +153,7 @@ const ScannedProductList = () => {
                 <CardAction className="w-full  gap-2 flex flex-row">
                   <Button
                     onClick={onCancelShopping}
+                    disabled={isPending}
                     variant={"destructive"}
                     className="flex-1 lg:h-20 md:h-18 text-xl hover:bg-red-900"
                   >
@@ -161,7 +162,7 @@ const ScannedProductList = () => {
                   <Button
                     onClick={handlePayment}
                     soundType={true}
-                    disabled={cartItems.length === 0}
+                    disabled={cartItems.length === 0 || isPending}
                     className=" flex-[3] lg:h-20 md:h-18 text-xl bg-green-300 hover:bg-green-600 hover:text-gray-50 text-black"
                   >
                     Ödeme Yap
