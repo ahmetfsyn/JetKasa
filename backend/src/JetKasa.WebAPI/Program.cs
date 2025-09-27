@@ -5,7 +5,17 @@ using JetKasa.WebAPI.Hubs;
 using JetKasa.WebAPI.Modules;
 using Scalar.AspNetCore;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:5173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
 
 // Services
 builder.Services.AddOpenApi();
@@ -20,6 +30,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 var app = builder.Build();
 
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -28,6 +39,9 @@ app.UseHttpsRedirection();
 
 // Minimal API
 app.RegisterRoutes();
+
+app.UseCors("AllowFrontend");
+
 
 // OpenAPI / Scalar UI
 app.MapHub<PaymentHub>("/hub");
