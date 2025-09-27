@@ -3,11 +3,18 @@ import { create } from "zustand";
 
 export type CartStore = {
   cartItems: Product[];
+  cartId: string;
   addProductToCart: (product: Product) => void;
+  createCart: (cartId: string) => void;
 };
 
 const useCartStore = create<CartStore>((set) => ({
   cartItems: [],
+  cartId: "",
+  createCart: (cartId) =>
+    set(() => ({
+      cartId: cartId,
+    })),
   addProductToCart: (product) =>
     set((state) => {
       const isProductExists = state.cartItems.find(
