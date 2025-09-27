@@ -15,9 +15,10 @@ import { formatCurrency } from "@/utils/formatCurrency";
 import { showMessage } from "@/utils/showMessage";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRightIcon } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import BarcodeScanner from "react-qr-barcode-scanner";
+import { useCreateCart } from "@/hooks/useCreateCart";
 
 const columns: ColumnDef<Product>[] = [
   {
@@ -43,6 +44,12 @@ const ScannedProductList = () => {
   const [manuelBarcode, setManuelBarcode] = useState<string>("");
   const { handleAddToCart, isFetching } = useProductByBarcode();
   const { total, subTotal, totalDiscount, cartItems } = useCart();
+  const { createCart } = useCreateCart();
+
+  useEffect(() => {
+    createCart();
+  }, []);
+
   const formattedCurrency = useCallback(formatCurrency, [formatCurrency]);
 
   const onCancelShopping = useCallback(() => {
