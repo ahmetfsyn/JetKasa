@@ -1,35 +1,43 @@
 import "react-simple-keyboard/build/css/index.css";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useRef, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-import Keyboard, { type SimpleKeyboard } from "react-simple-keyboard";
 import { Check, X } from "lucide-react";
 
 const PaymentResult = () => {
   const [searchParams] = useSearchParams();
-  const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState<string>("");
-  const virtualKeyboardRef = useRef<SimpleKeyboard | null>(null);
+  // const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState<string>("");
+  // const virtualKeyboardRef = useRef<SimpleKeyboard | null>(null);
   const navigate = useNavigate();
-  const handleSendReceipt = () => {
-    console.log(emailOrPhoneNumber, "Fiş gönderildi");
 
-    return navigate("/");
-  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigate("/");
+    }, 5000);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    setEmailOrPhoneNumber(input);
-    virtualKeyboardRef.current?.setInput(input);
-  };
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
-  const handleKeyboardChange = (input: string) => {
-    setEmailOrPhoneNumber(input);
-  };
+  // const handleSendReceipt = () => {
+  //   console.log(emailOrPhoneNumber, "Fiş gönderildi");
 
-  const handleKeyPress = (button: string) => {
-    if (button === "{enter}") handleSendReceipt();
-  };
+  //   return navigate("/");
+  // };
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const input = e.target.value;
+  //   setEmailOrPhoneNumber(input);
+  //   virtualKeyboardRef.current?.setInput(input);
+  // };
+
+  // const handleKeyboardChange = (input: string) => {
+  //   setEmailOrPhoneNumber(input);
+  // };
+
+  // const handleKeyPress = (button: string) => {
+  //   if (button === "{enter}") handleSendReceipt();
+  // };
 
   if (searchParams.get("isSuccess")?.valueOf() === "true") {
     return (
@@ -39,10 +47,10 @@ const PaymentResult = () => {
             <Check className="bg-green-600 rounded-full w-12 h-12 p-1 text-white" />
             Ödemeniz Başarıyla Alındı
           </p>
-          <p className="md:text-xl lg:text-2xl text-gray-300">
+          {/* <p className="md:text-xl lg:text-2xl text-gray-300">
             Fişinizi almak için telefon numaranızı veya email adresinizi giriniz
-          </p>
-          <div className="flex flex-col gap-8">
+          </p> */}
+          {/* <div className="flex flex-col gap-8">
             <Input
               type="text"
               autoFocus
@@ -64,7 +72,7 @@ const PaymentResult = () => {
             keyboardRef={(r) => (virtualKeyboardRef.current = r)}
             onChange={handleKeyboardChange}
             onKeyPress={handleKeyPress}
-          />
+          /> */}
         </div>
       </div>
     );

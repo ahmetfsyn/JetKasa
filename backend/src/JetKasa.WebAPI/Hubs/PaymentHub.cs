@@ -1,22 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.SignalR;
 
 namespace JetKasa.WebAPI.Hubs
 {
+
     public class PaymentHub : Hub
     {
-        public async Task ConnectToPayment(Guid CartId)
+        public async Task StartPayment(object data)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, CartId.ToString());
+            // POS cihazına mesaj gönderiyoruz.
+            // Eğer POS tek device ise Clients.All yeterli
+            await Clients.All.SendAsync("ReceivePaymentStart", data);
         }
 
-        public async Task DisconnectFromPayment(Guid CartId)
+        // Mobil cihazdan gelen veri
+        public async Task PaymentProcessed(object resultData)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, CartId.ToString());
+            // Web uygulamasına gönder
+            await Clients.All.SendAsync("ReceivePaymentResult", resultData);
         }
-
     }
 }

@@ -10,15 +10,21 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+System.Console.WriteLine(port);
 builder.WebHost.UseUrls($"http://*:{port}");
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:5173")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod());
+    options.AddPolicy("AllowWebAndMobileApps", policy =>
+    {
+        policy
+            .SetIsOriginAllowed(_ => true) // her origin'e izin verir (sadece dev için)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); // WebSocket için zorunlu
+    });
 });
+
 
 // Services
 builder.Services.AddOpenApi();
@@ -38,12 +44,16 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 // Middleware
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    // System.Console.WriteLine("productta");
+    // app.UseHttpsRedirection();
+}
 
 // Minimal API
 app.RegisterRoutes();
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowWebAndMobileApps");
 
 
 // OpenAPI / Scalar UI
