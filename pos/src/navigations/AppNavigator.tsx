@@ -1,4 +1,3 @@
-import Welcome from '../screens/Welcome';
 import Payment from '../screens/Payment';
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
@@ -11,7 +10,6 @@ const AppNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="WelcomeScreen" component={Welcome} />
       <Stack.Screen name="PaymentScreen" component={Payment} />
     </Stack.Navigator>
   );
