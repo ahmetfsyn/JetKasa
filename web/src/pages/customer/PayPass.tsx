@@ -1,25 +1,66 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useCart } from "@/hooks/useCart";
+import { useSignalRHub } from "@/hooks/useSignalRHub";
 import { useSound } from "@/hooks/useSound";
+import { createPaymentAsync } from "@/services/paymentService";
+import useCartStore from "@/store/useCartStore";
+import { showMessage } from "@/utils/showMessage";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const PayPass = () => {
   const navigate = useNavigate();
-
+  const { connection, isConnected } = useSignalRHub();
+  const { cartId } = useCartStore();
   const playSound = useSound();
   useEffect(() => {
     playSound("/sounds/payment-is-started-sound.wav");
   }, [playSound]);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      navigate("/payment/payment-result?isSuccess=" + true);
-    }, 6000);
+  const { total } = useCart();
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [navigate]);
+  useEffect(() => {
+    if (isConnected) {
+      connection?.send("StartPayment", {
+        cartId: cartId,
+        cartTotal: total,
+      });
+
+      const handler = async (dataFromPos: any) => {
+        console.log("webe postan gelen mesaj : ", dataFromPos);
+        if (dataFromPos.isSuccess) {
+          try {
+            const data = await createPaymentAsync({
+              cartId,
+              email: dataFromPos.data.email,
+              username: dataFromPos.data.username,
+            });
+
+            showMessage({
+              message: data.data,
+              options: {
+                type: "success",
+              },
+            });
+
+            return navigate("/payment/payment-result?isSuccess=true");
+          } catch (error: any) {
+            showMessage({
+              message: error,
+              options: {
+                type: "error",
+              },
+            });
+            return navigate("/payment-result?isSuccess=false");
+          }
+        }
+      };
+
+      connection?.on("ReceivePaymentResult", handler);
+    }
+
+    return () => {};
+  }, [isConnected, connection]);
 
   return (
     <div className="flex h-full items-center justify-center bg-black/30 backdrop-blur-md rounded-md">
