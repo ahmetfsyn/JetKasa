@@ -5,6 +5,11 @@ import {
   HubConnection,
   HttpTransportType,
 } from '@microsoft/signalr';
+import {
+  BASE_API_URL_DEV,
+  BASE_API_URL_PROD,
+  IS_PROD,
+} from '../constants/constant';
 
 export const usePaymentHub = () => {
   const [connection, setConnection] = useState<HubConnection | null>(null);
@@ -14,7 +19,7 @@ export const usePaymentHub = () => {
 
   useEffect(() => {
     const hubConnection = new HubConnectionBuilder()
-      .withUrl('http://192.168.2.122:8080/hub', {
+      .withUrl(`${IS_PROD ? BASE_API_URL_PROD : BASE_API_URL_DEV}/hub`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
       })

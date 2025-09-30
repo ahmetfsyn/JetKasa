@@ -4,6 +4,11 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from "@microsoft/signalr";
+import {
+  BASE_API_URL_DEV,
+  BASE_API_URL_PROD,
+  IS_PROD,
+} from "@/configs/axiosConfig";
 
 export const useSignalRHub = () => {
   const [connection, setConnection] = useState<HubConnection | null>(null);
@@ -11,7 +16,7 @@ export const useSignalRHub = () => {
 
   useEffect(() => {
     const conn = new HubConnectionBuilder()
-      .withUrl("http://localhost:8080/hub")
+      .withUrl(`${IS_PROD ? BASE_API_URL_PROD : BASE_API_URL_DEV}/hub`)
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
       .build();
